@@ -1,6 +1,7 @@
 package com.musea.security.vk;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -20,13 +21,13 @@ public class VKAuthProvider implements AuthenticationProvider {
 	
 	private static final String VK_VERIFICATION_STR = "%1$s_%2$s_%3$s";
 	
-	private final Collection<String> secretKeys;
-	private final Collection<Integer> adminIds;
+	private final String[] secretKeys;
+	private final Collection<Long> adminIds;
 	
 	@Autowired private MessageDigest messageDigest;
 	
-	public VKAuthProvider(Collection<String> secretKeys, Collection<Integer> adminIds) {
-		this.adminIds = adminIds;
+	public VKAuthProvider(String[] secretKeys, Long[] adminIds) {
+		this.adminIds = Arrays.asList(adminIds);
 		this.secretKeys = secretKeys;
 	}
 

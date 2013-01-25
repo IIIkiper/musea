@@ -50,8 +50,6 @@ public abstract class AuthFilter<T extends AuthToken> extends GenericFilterBean 
 	
 	private boolean isAuthenticationRequired(T authToken) {
 		Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();		
-		boolean authRequired = existingAuth == null || !existingAuth.isAuthenticated() || !authToken.equals(existingAuth);
-		
-		return authRequired;
+		return existingAuth == null || !existingAuth.isAuthenticated() || !authToken.equals(existingAuth);
 	}
 }

@@ -13,7 +13,6 @@ public class VKAuthToken extends AuthToken {
 	public static final GrantedAuthority VK_AUTHORITY = new SimpleGrantedAuthority("ROLE_VK");
 	
 	private final Long vkUserId;
-	private final Long userId;
 	
 	private final String hexKey;
 	private final String applicationId;
@@ -23,20 +22,13 @@ public class VKAuthToken extends AuthToken {
 		this.vkUserId = vkUserId;
 		this.applicationId = applicationId;
 		this.hexKey = hexKey;
-		this.userId = null;
 	}
 	
 	public VKAuthToken(Long userId, Long vkUserId, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
+		super(userId, authorities);
 		this.vkUserId = vkUserId;
-		this.userId = userId;
 		this.hexKey = null;
 		this.applicationId = null;
-	}
-
-	@Override
-	public Long getPrincipal() {
-		return userId;
 	}
 	
 	@Override

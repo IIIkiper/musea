@@ -10,24 +10,29 @@ public abstract class AuthToken extends AbstractAuthenticationToken {
 	private static final long serialVersionUID = 4636520683616872348L;
 	
 	public static final GrantedAuthority ADMIN_AUTHORITY = new SimpleGrantedAuthority("ROLE_ADMIN");
+	private final Long userId;
 
 	public AuthToken(Collection<? extends GrantedAuthority> authorities) {
+		this(null, authorities);
+	}
+	
+	public AuthToken(Long userId, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
-		super.setAuthenticated(authorities != null);
+		super.setAuthenticated(authorities != null && !authorities.isEmpty());
+		this.userId = userId;
 	}
 
 	/**
 	 * @return user ID
 	 */
 	@Override
-	public abstract Long getPrincipal();
+	public final Long getPrincipal() {
+		return userId;
+	}
 	
-	/**
-	 * Credentials does not needed for application. Override if required.
-	 */
 	@Override
 	public Object getCredentials() {
-		return null;
+		return null; // Credentials does not needed for application. Override if required.
 	}
 	
 	@Override
