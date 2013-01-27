@@ -20,6 +20,12 @@
 			<version>4.1.9.Final</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+		
 		<!-- Jackson annotations -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

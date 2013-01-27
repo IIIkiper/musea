@@ -1,4 +1,4 @@
-package com.musea.model.domian;
+package com.musea.model.domain;
 
 import java.util.Date;
 
@@ -11,7 +11,10 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
-public abstract class TimeDomain extends Domain {
+public abstract class WeightLink {
+	
+	@Column(name = "weight_amt")
+	private Float weight;
 	
 	@JsonIgnore
 	@Column(name = "create_dt", updatable = false)
@@ -40,5 +43,11 @@ public abstract class TimeDomain extends Domain {
 	}
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+	public Float getWeight() {
+		return weight;
+	}
+	public void setWeight(Float weight) {
+		this.weight = weight;
 	}
 }

@@ -1,4 +1,4 @@
-package com.musea.model.domian;
+package com.musea.model.domain;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
