@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import com.musea.model.DataCfgTest;
 import com.musea.model.ModelCfg;
 import com.musea.model.OrmCfg;
+import com.musea.model.dao.vk.VKUserDao;
 import com.musea.model.domain.User;
 
 @ContextConfiguration(classes = {ModelCfg.class, OrmCfg.class, DataCfgTest.class})
@@ -17,11 +18,11 @@ import com.musea.model.domain.User;
 public class UserDaoTest extends AbstractTransactionalTestNGSpringContextTests {
 	
 	@Autowired
-	private UserDao usedDao;
+	private VKUserDao usedDao;
 	
 	@Test
 	public void testGetUserBySystemId() {
-		User user = usedDao.getUserBySystemId(0);
+		User user = usedDao.getUserBySystemId(0, "friends");
 		Assert.assertNull(user);
 	}
 }

@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.musea.model.domain.vk.VKUser;
+import com.musea.service.vk.VKUserService;
 
 /**
  * Authentication provider for VK users.
@@ -25,6 +27,7 @@ public class VKAuthProvider implements AuthenticationProvider {
 	private final Collection<Long> adminIds;
 	
 	@Autowired private MessageDigest messageDigest;
+	@Autowired private VKUserService userService;
 	
 	public VKAuthProvider(String[] secretKeys, Long[] adminIds) {
 		this.adminIds = Arrays.asList(adminIds);
@@ -61,13 +64,12 @@ public class VKAuthProvider implements AuthenticationProvider {
 					authorities.add(VKAuthToken.ADMIN_AUTHORITY);
 				}
 				
-				//VKUser user = userService.getUserByVkUserId(userID);
-				return new VKAuthToken(0l, vkUserId, authorities); // TODO
+				VKUser user = userService.getOrCreateUserBySystemId(vkUserId);
+				return new VKAuthToken(user.getId(), vkUserId, authorities);
 			}	
 		}
 		
 		throw new BadCredentialsException("VK user authentication: bad credentials.");
-		//return null; // Trying next provider
 	}
 
 	@Override

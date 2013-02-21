@@ -4,26 +4,35 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "vk_song")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "source_system_cd_id", discriminatorType = DiscriminatorType.INTEGER)
 @AttributeOverride(name = "id", column = @Column(name = "vk_song_id"))
-public class Audio extends TimeDomain {
+public abstract class Audio extends TimeDomain {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "song_id")
 	private Song song;
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "audios")
-	private Set<User> users;
+	@Transient
+	protected Set<? extends User> users;
+	
+	@Column(name = "source_system_cd_id", insertable = false, updatable = false)
+	private int sourceId;
 	
 	@Column(name = "aid", nullable = false)
 	@JsonProperty(value = "aid", required = true)
@@ -44,7 +53,7 @@ public class Audio extends TimeDomain {
 	@Override
 	public boolean equals(Object obj) {
 		try {
-			return this == obj || (obj != null && this.systemId == ((Audio) obj).systemId);
+			return this == obj || (obj != null && systemId == ((Audio) obj).systemId && sourceId == ((Audio) obj).sourceId);
 		} catch (Exception ex) {
 			return false;
 		}
@@ -56,12 +65,6 @@ public class Audio extends TimeDomain {
 	}
 	public void setSong(Song song) {
 		this.song = song;
-	}
-	public Set<User> getUsers() {
-		return users;
-	}
-	public void setUsers(Set<User> users) {
-		this.users = users;
 	}
 	public int getSystemId() {
 		return systemId;
@@ -92,5 +95,8 @@ public class Audio extends TimeDomain {
 	}
 	public void setDuration(Integer duration) {
 		this.duration = duration;
+	}
+	public Set<? extends User> getUsers() {
+		return users;
 	}
 }

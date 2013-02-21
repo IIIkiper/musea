@@ -1,23 +1,24 @@
 package com.musea.model.dao;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.musea.model.domain.User;
+import com.musea.model.domain.Audio;
 
-public abstract class UserDao<T extends User> extends Dao<T> {
+public abstract class AudioDao<T extends Audio> extends Dao<T> {
 	
-	public T getUserBySystemId(long systemId, String... associations) {
+	public List<T> getAudiosBySystemIds(Collection<Long> ids) {
 		CriteriaBuilder cb = getCriteriaBuilder();
 		CriteriaQuery<T> query = cb.createQuery(entityClass);
 		Root<T> from = query.from(entityClass);
 		
-		initializeAssociations(from, associations);	
-				
-		return single(
+		return list(
 			query.select(from)
-			.where(cb.equal(from.get("systemId"), systemId))
+			.where(from.get("systemId").in(ids))
 		);
 	}
 }
