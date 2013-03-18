@@ -8,10 +8,13 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "user")
@@ -32,11 +35,21 @@ public abstract class User extends TimeDomain {
 	@Column(name = "source_system_cd_id", insertable = false, updatable = false)
 	private int sourceId;
 	
-	@Transient
-	protected Set<? extends User> friends;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "friendship",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "friend_id")
+	)
+	private Set<User> friends;
 	
-	@Transient
-	protected Set<? extends Audio> audios;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "vk_user_vk_song_rel",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "vk_song_id")
+	)
+	private Set<Audio> audios;
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -60,10 +73,16 @@ public abstract class User extends TimeDomain {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<? extends User> getFriends() {
+	public Set<User> getFriends() {
 		return friends;
 	}
-	public Set<? extends Audio> getAudios() {
+	public Set<Audio> getAudios() {
 		return audios;
+	}
+	public void setFriends(Set<User> friends) {
+		this.friends = friends;
+	}
+	public void setAudios(Set<Audio> audios) {
+		this.audios = audios;
 	}
 }

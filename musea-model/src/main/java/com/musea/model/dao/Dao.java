@@ -39,6 +39,10 @@ public abstract class Dao <T extends Domain> {
         }
     }
     
+    public Class<T> getEntityClass() {
+    	return entityClass;
+    }
+     
     protected CriteriaBuilder getCriteriaBuilder() {
     	return entityManager.getCriteriaBuilder();
     }
@@ -85,8 +89,21 @@ public abstract class Dao <T extends Domain> {
     	return single(criteria);
     }
         
-    public T getByID(Serializable id) {
+    public T getById(Serializable id) {
     	return entityManager.find(entityClass, id);
+    }
+    
+    public T getById(Serializable id, String... associations) {
+    	CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    	CriteriaQuery<T> query= cb.createQuery(entityClass);
+    	Root<T> from = query.from(entityClass);
+    	
+    	initializeAssociations(from, associations);
+    	
+    	return single(
+			query.select(from)
+				.where(cb.equal(from.get("id"), id))
+    	);
     }
     
     public <X extends Domain> void persist(X entity) {

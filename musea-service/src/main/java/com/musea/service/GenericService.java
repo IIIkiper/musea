@@ -21,7 +21,7 @@ public abstract class GenericService<T extends Domain> {
 	
 	@Transactional(readOnly = true)
 	public T getById(Serializable id) {
-		return getDao().getByID(id);
+		return getDao().getById(id);
 	}
 	
 	/**

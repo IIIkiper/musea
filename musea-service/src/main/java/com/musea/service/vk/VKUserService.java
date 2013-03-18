@@ -3,24 +3,25 @@ package com.musea.service.vk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.musea.model.dao.UserDao;
+import com.musea.model.dao.AbstractUserDao;
 import com.musea.model.dao.vk.VKUserDao;
 import com.musea.model.domain.vk.VKUser;
-import com.musea.service.UserService;
+import com.musea.service.AbstractUserService;
 
 @Service
-public class VKUserService extends UserService<VKUser> {
+public class VKUserService extends AbstractUserService<VKUser> {
 	
 	@Autowired
 	private VKUserDao userDao;
-
-	@Override
-	protected UserDao<VKUser> getDao() {
-		return userDao;
+	
+	public VKUserService() { }
+	
+	public VKUserService(VKUserDao userDao) {
+		this.userDao = userDao;
 	}
 
 	@Override
-	protected VKUser getUserInstance() {
-		return new VKUser();
-	}	
+	protected AbstractUserDao<VKUser> getDao() {
+		return userDao;
+	}
 }

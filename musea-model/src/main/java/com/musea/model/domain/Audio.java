@@ -11,9 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,9 +28,12 @@ public abstract class Audio extends TimeDomain {
 	@JoinColumn(name = "song_id")
 	private Song song;
 	
-	@Transient
-	protected Set<? extends User> users;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "audios")
+	private Set<User> users;
 	
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
 	@Column(name = "source_system_cd_id", insertable = false, updatable = false)
 	private int sourceId;
 	

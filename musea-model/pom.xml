@@ -47,6 +47,13 @@
 			</exclusions>
 		</dependency>
 		
+		<!-- Spring transaction -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		
 		<!-- PostgreSQL driver -->
 		<dependency>
 			<groupId>postgresql</groupId>
@@ -68,6 +75,9 @@
 			<artifactId>bonecp</artifactId>
 			<version>0.7.1.RELEASE</version>
 		</dependency>
+		
+		<!-- AspectJ -->
+		
 	</dependencies>
 		
 	<build>
